@@ -7,8 +7,6 @@ namespace api.Service
     public class ProductService : IProductService
     {
         private readonly ProductRepository productRepository;
-
-        public ProductService(){}
         public ProductService(ProductRepository productRepository)
         {
             this.productRepository = productRepository;
