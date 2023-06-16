@@ -1,7 +1,9 @@
 using api.Entities;
 
-namespace api.Service.IService;
-public interface IProductService
+namespace api.Service.IService
 {
-    Task<Product> GetProductById(int id);
+    public interface IProductService
+    {
+        Task<Product> GetProductById(int id);
+    }
 }

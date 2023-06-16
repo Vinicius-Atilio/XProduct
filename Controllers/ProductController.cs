@@ -9,20 +9,20 @@ namespace api.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly ProductService productService;
-        private readonly ILogger<ProductController> logger;
+        private readonly ProductService _productService;
+        private readonly ILogger<ProductController> _logger;
 
         public ProductController(ProductService productService, ILogger<ProductController> logger)
         {
-            this.productService = productService;
-            this.logger = logger;
+            _productService = productService;
+            _logger = logger;
         }
 
         [HttpGet("{id}")]
         public async Task<Product> Get(int id)
         {
             Console.WriteLine(id);
-            return await productService.GetProductById(id);
+            return await _productService.GetProductById(id);
         }
     }
 }

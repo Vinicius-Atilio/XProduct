@@ -11,6 +11,6 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("//localhost:3306/xproduct");
+        optionsBuilder.UseSqlServer("DefaultConnection");
     }
 }

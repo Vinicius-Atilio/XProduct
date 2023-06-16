@@ -1,34 +1,36 @@
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using System;
+using api.Repository;
+using api.Repository.IRepository;
+using api.Service;
+using api.Service.IService;
+using Microsoft.EntityFrameworkCore;
 
-namespace api {
-    public class Program {
-        public static void Main(string[] args) {
-            try {
-                BuildWebHost(args).Run();
-            } catch (Exception) {
-                throw;
-            }
-        }
+var builder = WebApplication.CreateBuilder(args);
 
-        private static IWebHost BuildWebHost(string[] args) {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("hosting.json", optional : true)
-                .Build();
-            return new WebHostBuilder()
-                .CaptureStartupErrors(true)
-                .UseSetting("detailedErrors", "true")
-                .UseKestrel(opt => {
-                    opt.AddServerHeader = false;
-                })
-                .UseConfiguration(config)
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .Build();
-        }
-    }
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer("DefaultConnection"));
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
